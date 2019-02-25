@@ -323,7 +323,7 @@ function eePrinter(ip, port, apikey, i, camPort, noConn) {
 function addPrinter(ip, port, apikey, printerNum) {
   	var editButton          = '<li><a data-toggle="modal" href="#" onclick="eePrinterModal(' + printerNum +')"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Printer</a></li>';
   	var removeButton        = '<li><a data-toggle="modal" href="#" onclick="removePrinter(' + printerNum +')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Remove Printer </a></li>';
-  	var octoPrintPageButton = '<li><a data-toggle="modal" href="http://' +printers.ip[printerNum] +'/" target="_blank"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> OctoPrint</a></li>';
+  	var octoPrintPageButton = '<li><a data-toggle="modal" href="http://' +printers.ip[printerNum] + ':' + printers.port[printerNum] + '/" target="_blank"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> OctoPrint</a></li>';
   	// add HTML
   	$("#printerGrid").append('<div class="col-xs-6 col-md-4 col-lg-3" id="printer' + printerNum +'"></div>');
   	$("#printer" +printerNum).append('<div class="panel panel-default" id="panel' + printerNum +'"></div>');
