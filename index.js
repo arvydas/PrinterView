@@ -352,7 +352,7 @@ function addPrinter(ip, port, apikey, printerNum) {
 
   	$("#body" +printerNum).append('<div class="progress" id="progress' + printerNum +'"></div>');
 
-  	$("#progress" +printerNum).append('<div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"  id="progressBar' + printerNum +'"></div>');
+  	$("#progress" +printerNum).append('<div class="progress-bar progress-bar-info active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"  id="progressBar' + printerNum +'"></div>');
 	//$("#panel" +printerNum).append('<div class="panel-footer" id="printerIP' + printerNum +'">ip</div>');
 }
 
