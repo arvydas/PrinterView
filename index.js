@@ -161,11 +161,15 @@ function basicInfo(ip, port, apikey, index) {
   	client[index].get("/api/printerprofiles")
   	.done(function (response) {
       		// get name of the printer
-    		document.getElementById("printerName" +index).innerHTML =response.profiles._default.name;
+    		//document.getElementById("printerName" +index).innerHTML =response.profiles._default.name;
       		// set the panel footer as the printer's ip
-    		document.getElementById("printerIP" +index).innerHTML = ip;
+    		//document.getElementById("printerIP" +index).innerHTML = ip;
                 // get number of tools
                 printersInfo.tool[index] = response.profiles._default.extruder.count;
+  	});
+  	client[index].get("/api/settings")
+      .done(function (response) {
+    		document.getElementById("printerName" +index).innerHTML =response.appearance.name;
   	});
 }
 
@@ -188,7 +192,7 @@ function jobInfo(ip, port, apikey, index) {
                         printersInfo.state[index] = printerState.printing;
                         
           		// set estimation of print time left
-          		document.getElementById("timeLeft" +index).innerHTML = "Time left: " + "<span class='highlight'>" + (response.progress.printTimeLeft / 60).toFixed(2) + "</span>" + " minutes";
+          		document.getElementById("timeLeft" +index).innerHTML = "ETA: " + "<span class='highlight'>" + (response.progress.printTimeLeft / 60).toFixed(0) + "</span>" + " min";
           		// set percentage of print completion
           		$("div#progressBar" +index).css("width", response.progress.completion + "%");
     		}
@@ -204,12 +208,12 @@ function tempInfo(ip, port, apikey, index) {
   	client[index].get("/api/printer")
   	.done(function (response) {
       		// get temp of extruder 0 and its target temp
-      		document.getElementById("e0Temp" +index).innerHTML = "Extruder 0: " + "<span class='highlight'>" + response.temperature.tool0.actual + "°/" +response.temperature.tool0.target +"°" + "</span>";
+      		document.getElementById("e0Temp" +index).innerHTML = "E0: " + "<span class='highlight'>" + response.temperature.tool0.actual + "°/" +response.temperature.tool0.target +"°" + "</span>";
                 // get temp of extruder 1 and its target temp
                 if (typeof response.temperature.tool1 !== "undefined" && response.temperature.tool1.actual !== null) {
-                    document.getElementById("e1Temp" +index).innerHTML = "Extruder 1: " + "<span class='highlight'>" + response.temperature.tool1.actual + "°/" +response.temperature.tool1.target +"°" + "</span>";
+                    document.getElementById("e1Temp" +index).innerHTML = "E1: " + "<span class='highlight'>" + response.temperature.tool1.actual + "°/" +response.temperature.tool1.target +"°" + "</span>";
                 } else {
-                    document.getElementById("e1Temp" +index).innerHTML ="Extruder 1: no tool";
+                    document.getElementById("e1Temp" +index).innerHTML ="E1: no tool";
                 }
       		// get temp of the bed and its target temp
       		if (typeof response.temperature.bed !== "undefined" && response.temperature.bed.actual !== null) {
@@ -240,7 +244,8 @@ function scaleRect(srcSize, dstSize) {
 
 function resizeCanvas(ratio, index)
 {
-    var canvasWidth = (document.getElementById("panel"+index).offsetWidth)/1.1;
+    //var canvasWidth = (document.getElementById("panel"+index).offsetWidth)/1.1;
+    var canvasWidth = (document.getElementById("panel"+index).offsetWidth);
     var canvasHeight = canvasWidth * ratio;
     document.getElementById("printerCam"+index).width = canvasWidth;
     document.getElementById("printerCam"+index).height = canvasHeight;
@@ -248,7 +253,7 @@ function resizeCanvas(ratio, index)
 
 function videoInfo(ip, camPort, index) {
     //resizeCanvas(0.5625, index);
-    var url = "http://" + ip + ":" + camPort + "/?action=stream";
+    var url = "http://192.168.100.97:" + camPort + "/?action=stream";
     var img = new Image();
     img.src = url;
     var canvas  = document.getElementById("printerCam" + index);
@@ -267,6 +272,9 @@ function videoInfo(ip, camPort, index) {
                 height: canvas.height
             }
         );
+        context.save();
+        context.translate(dstRect.width, dstRect.height);
+        context.scale(-1, -1);
         context.drawImage(
             img,
             srcRect.x,
@@ -278,6 +286,7 @@ function videoInfo(ip, camPort, index) {
             dstRect.width,
             dstRect.height
         );
+        context.restore();
     };
 }
 
@@ -312,31 +321,39 @@ function eePrinter(ip, port, apikey, i, camPort, noConn) {
 
 
 function addPrinter(ip, port, apikey, printerNum) {
-  	var editButton          = '<li><button type="button" style="width: 100%" class="btn btn-default btn-sm pull-right" data-toggle="modal" onclick="eePrinterModal(' + printerNum +')">Edit Printer <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button></li>';
-  	var removeButton        = '<li><button type="button" style="width: 100%" class="btn btn-default btn-sm pull-right" data-toggle="modal" onclick="removePrinter(' + printerNum +')">Remove Printer <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></li>';
-  	var octoPrintPageButton = '<li><a type="button" style="width: 100%" class="btn btn-default btn-sm pull-right" data-toggle="modal" href="http://' +printers.ip[printerNum] +'/" target="_blank">OctoPrint <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>';
+  	var editButton          = '<li><a data-toggle="modal" href="#" onclick="eePrinterModal(' + printerNum +')"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit Printer</a></li>';
+  	var removeButton        = '<li><a data-toggle="modal" href="#" onclick="removePrinter(' + printerNum +')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Remove Printer </a></li>';
+  	var octoPrintPageButton = '<li><a data-toggle="modal" href="http://' +printers.ip[printerNum] +'/" target="_blank"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> OctoPrint</a></li>';
   	// add HTML
-  	$("#printerGrid").append('<div class="col-xs-6 col-md-4" id="printer' + printerNum +'"></div>');
-  	$("#printer" +printerNum).append('<div class="panel panel-primary" id="panel' + printerNum +'"></div>');
+  	$("#printerGrid").append('<div class="col-xs-6 col-md-4 col-lg-3" id="printer' + printerNum +'"></div>');
+  	$("#printer" +printerNum).append('<div class="panel panel-default" id="panel' + printerNum +'"></div>');
   	$("#panel" +printerNum).append('<div class="panel-heading clearfix" id="panelHeading' + printerNum +'"></div>');
-  	$("#panelHeading" +printerNum).append('<h4 class="panel-title pull-left" style="padding-top: 7.5px;" id="printerName' + printerNum +'">Printer Name</h4></h4>');
+  	$("#panelHeading" +printerNum).append('<span id="printerName' + printerNum +'" class="pull-left">Loading...</span>');
   	$("#panelHeading" +printerNum).append('<div class="btn-group pull-right" id="btnGroup' + printerNum +'"></div>');
-  	$("#btnGroup" +printerNum).append('<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true" id="menuBtn' + printerNum +'"></span></button>');
+  	$("#btnGroup" +printerNum).append('<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true" id="menuBtn' + printerNum +'"></span></button>');
   	$("#btnGroup" +printerNum).append('<ul class="dropdown-menu" role="menu" id="dropdown' + printerNum +'"></ul>');
   	$("#dropdown" +printerNum).append(editButton);
   	$("#dropdown" +printerNum).append(removeButton);
   	$("#dropdown" +printerNum).append(octoPrintPageButton);
   	$("#panel" +printerNum).append('<div class="panel-body" id="body' + printerNum +'"></div>');
-        $("#body" +printerNum).append('<canvas id="printerCam' + printerNum +'" width = "320" height = "180" >Brouswe error!</canvas>');
-	$("#body" +printerNum).append('<p id="printerStatus' + printerNum +'">status</p>');
- 	$("#body" +printerNum).append('<p id="e0Temp' + printerNum +'">0</p>');
-        $("#body" +printerNum).append('<p id="e1Temp' + printerNum +'">0</p>');
-  	$("#body" +printerNum).append('<p id="bedTemp' + printerNum +'">0</p>');
-  	$("#body" +printerNum).append('<p id="currentFile' + printerNum +'">No active print</p>');
-  	$("#body" +printerNum).append('<p id="timeLeft' + printerNum +'">Print Time Left</p>');
+    $("#body" +printerNum).append('<canvas id="printerCam' + printerNum +'" width = "320" height = "180" >Browser error!</canvas>');
+
+    $("#body" +printerNum).append('<div id="summaryRowTop' + printerNum +'" class = "row"> </div>');
+
+    $("#summaryRowTop" +printerNum).append('<div id="e0Temp' + printerNum +'" class="col-md-4">Loading...</div>');
+    $("#summaryRowTop" +printerNum).append('<div id="e1Temp' + printerNum +'" class="col-md-4">Loading...</div>');
+  	$("#summaryRowTop" +printerNum).append('<div id="bedTemp' + printerNum +'" class="col-md-4">Loading...</div>');
+
+    $("#body" +printerNum).append('<div id="summaryRowBottom' + printerNum +'" class = "row"> </div>');
+
+    $("#summaryRowBottom" +printerNum).append('<div id="printerStatus' + printerNum +'" class="col-md-4">Loading...</div>');
+  	$("#summaryRowBottom" +printerNum).append('<div id="currentFile' + printerNum +'" class="col-md-4">Loading...</div>');
+  	$("#summaryRowBottom" +printerNum).append('<div id="timeLeft' + printerNum +'" class="col-md-4">Loading...</div>');
+
   	$("#body" +printerNum).append('<div class="progress" id="progress' + printerNum +'"></div>');
+
   	$("#progress" +printerNum).append('<div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"  id="progressBar' + printerNum +'"></div>');
-	$("#panel" +printerNum).append('<div class="panel-footer" id="printerIP' + printerNum +'">ip</div>');
+	//$("#panel" +printerNum).append('<div class="panel-footer" id="printerIP' + printerNum +'">ip</div>');
 }
 
 function eePrinterModal(index) {
@@ -425,7 +442,7 @@ function makeBlank(index) {
     	// set progress bar to 0%
     	$("div#progressBar" +index).css("width", "0%");
     	// set panel footer to printer ip with not connected messgae
-    	document.getElementById("printerIP" +index).innerHTML = printers.ip[index] +" (not connected)";
+    	//document.getElementById("printerIP" +index).innerHTML = printers.ip[index] +" (not connected)";
 }
 
 function testConnection(ip, port, apikey, index, camPort) {

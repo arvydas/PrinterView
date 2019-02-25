@@ -13,7 +13,7 @@
         	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
         	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
         	<link rel="stylesheet" type="text/css" href="style.css">
-        	<title>CornBotFarm</title>
+        	<title>3D printers</title>
         	<script type="text/javascript" src="jquery-3.2.1.min.js"></script>
         	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         	<script src="https://github.com/makeusabrew/bootbox/releases/download/v4.4.0/bootbox.min.js"></script>
@@ -29,16 +29,34 @@
                     {
                         font-weight:bold;
                     }
+
+                    .progress {
+                      margin-bottom: 0;
+                    }
+
+                    .page-header {
+                      margin: 0;
+                    }
+
+                    .panel-body {
+                      margin: 0;
+                      padding: 0;
+                    }
+
+                    .progress {
+                      height: 10px;
+                    }
                 </style>
 		<!--------------------------------------------------------------------------------------------------------------------------------------------------------->
     		<div class="page-header">
-        		<h1>3D FARM</h1>
         		<button type="button" class="btn btn-primary btn-lg" data-dismiss="modal" onclick="eePrinterModal(null)" id="eePrinterBtn">
               			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
           		</button>
+              <!--
          		<button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#removePrintersModal" id="removePrintersBtn">
               			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
           		</button>
+              -->
       		</div>
 		
       		<div id="printerPanels">
@@ -142,13 +160,6 @@
   				</div>
   			</div>
   		</div>
-
-  		<footer>
-        		<p>
-          			<a href="https://github.com/photo-mickey/PrinterView"><span class="glyphicon glyphicon-file" aria-hidden="true" style="color: black;">Source</span></a>
-          			<a href="https://github.com/photo-mickey/PrinterView/wiki"><span class="glyphicon glyphicon-book" aria-hidden="true" style="color: black;">Wiki</span></a>
-        		</p>
-  		</footer>
 	</body>
 
     	<script type="text/javascript" src="index.js"></script>
