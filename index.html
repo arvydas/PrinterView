@@ -24,44 +24,48 @@
     	</head>
 
     	<body>
-                <style>
-                    .highlight
-                    {
-                        font-weight:bold;
-                    }
+          <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">3D Printers</a>
+              </div>
+              <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                  <li id="backFromIframeBtn" style="display: none;">
+                    <a href="#" onclick="backFromIframe()">
+                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" onclick="eePrinterModal(null)" id="eePrinterBtn">
+                      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Printer
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" onclick="exportSettings()" id="exportSettingsBtn">
+                      <span class="glyphicon glyphicon-flash" aria-hidden="true"></span> Export
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
 
-                    .progress {
-                      margin-bottom: 0;
-                    }
-
-                    .page-header {
-                      margin: 0;
-                    }
-
-                    .panel-body {
-                      margin: 0;
-                      padding: 0;
-                    }
-
-                    .progress {
-                      height: 10px;
-                    }
-                </style>
-		<!--------------------------------------------------------------------------------------------------------------------------------------------------------->
-    		<div class="page-header">
-        		<button type="button" class="btn btn-primary btn-lg" data-dismiss="modal" onclick="eePrinterModal(null)" id="eePrinterBtn">
-              			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-          		</button>
-              <!--
-         		<button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#removePrintersModal" id="removePrintersBtn">
-              			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-          		</button>
-              -->
-      		</div>
 		
-      		<div id="printerPanels">
-  	      		<div class="row" id="printerGrid"></div>
-      		</div>
+          <div class="container-fluid">
+              <div id="printerPanels">
+                  <div class="row" id="printerGrid" class="equal"></div>
+              </div>
+
+              <div id="printerIframes" style="display: none;">
+              </div>
+          </div>
 
 		<div class="modal fade" id="eePrinterModal" tabindex="-1" role="dialog" aria-labelledby="eePrinterModal" aria-hidden="true">
        			<div class="modal-dialog">

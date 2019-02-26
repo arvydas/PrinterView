@@ -1,7 +1,35 @@
 body{
-  text-align: center;
+  padding-top: 60px;
 }
 
-#printerPanels{
-	padding: 0.3%;
+.equal {  
+    display: -webkit-flex;
+    display: flex;
+}
+
+.highlight
+{
+    font-weight:bold;
+}
+
+.progress {
+  margin-bottom: 0;
+}
+
+.page-header {
+  margin: 0;
+}
+
+.panel-body {
+  margin: 0;
+  padding: 0;
+}
+
+.progress {
+  height: 10px;
+}
+
+.navbar-inverse .navbar-nav>li>a,
+.navbar-inverse .navbar-brand {
+  color: white;
 }
