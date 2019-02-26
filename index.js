@@ -91,6 +91,7 @@ function initPrinters()
         "port": [],
         "apikey": [],
         "noConn": [],
+        "cameraIp": [],
         "camPort": []
     };
     printersInfo ={
@@ -159,7 +160,7 @@ function updateStatus(ip, port, apikey, camPort, index) {
                 basicInfo(ip, port, apikey, index);
           			jobInfo(ip, port, apikey, index);
           			tempInfo(ip, port, apikey, index);
-                videoInfo(printers.ip[index], printers.camPort[index], index);
+                videoInfo(printers.cameraIp[index], printers.camPort[index], index);
         		} else {
             			//Do not make blank. It is annoying.
           			document.getElementById("panel" + index).className = "panel panel-default";
@@ -287,7 +288,7 @@ function resizeCanvas(ratio, index)
 
 function videoInfo(ip, camPort, index) {
     //resizeCanvas(0.5625, index);
-    var url = "http://192.168.100.97:" + camPort + "/?action=snapshot";
+    var url = "http://" + ip + ":" + camPort + "/?action=snapshot";
     var img = new Image();
     img.src = url;
     var canvas  = document.getElementById("printerCam" + index);
@@ -330,7 +331,7 @@ function updatePrinters() {
     	}
 }
 
-function eePrinter(ip, port, apikey, i, camPort, noConn) {
+function eePrinter(ip, port, apikey, i, camPort, camIP, noConn) {
 	if (i === numPrinters) {
         	// This is a new addition
         	addPrinter(ip, port, apikey, i);
@@ -344,6 +345,7 @@ function eePrinter(ip, port, apikey, i, camPort, noConn) {
     	printers.ip[i] = ip;
     	printers.port[i] = port;
     	printers.apikey[i] = apikey;
+    	printers.cameraIp[i] = camIP;
         printers.camPort[i] = camPort;
     	client[i].options.baseurl = "http://" + ip + ":" + port;
     	client[i].options.apikey = apikey;
@@ -403,6 +405,7 @@ function eePrinterModal(index) {
     		// Use blank/default values for new printer
     		index = numPrinters;
     		$("#eeIP").val("");
+    		$("#eeCameraIP").val("");
     		$("#eePort").val("80");
     		$("#eeApikey").val("");
                 $("#eeCamPort").val("8080");
@@ -412,6 +415,7 @@ function eePrinterModal(index) {
   	} else {
       		// Pull in existing printer values
     		printers = JSON.parse(localStorage.getItem("savedPrinters"));
+    		$("#eeCameraIP").val(printers.cameraIp[index]);
     		$("#eeIP").val(printers.ip[index]);
     		$("#eePort").val(printers.port[index]);
     		$("#eeApikey").val(printers.apikey[index]);
@@ -458,13 +462,14 @@ function exportSettings() {
 function eeFromModal() {
   	var index = modalIndex;
   	var eeIP = $("#eeIP").val();
+  	var eeCameraIP = $("#eeCameraIP").val();
   	var eePort = $("#eePort").val();
   	var eeApikey = $("#eeApikey").val();
         var eeCamPort = $("#eeCamPort").val();
-  	if (eeIP === "" || eeApikey === "" || eePort === "" || eeCamPort === "") {
+  	if (eeIP === "" || eeApikey === "" || eePort === "" || eeCamPort === "" || eeCameraIP === "") {
     		$("#missingInfoModal").modal("show");
   	} else {
-   		testConnection(eeIP, eePort, eeApikey, index, eeCamPort);
+   		testConnection(eeIP, eePort, eeApikey, index, eeCamPort, eeCameraIP);
   	}
 }
 
@@ -554,31 +559,31 @@ function makeBlank(index) {
     	//document.getElementById("printerIP" +index).innerHTML = printers.ip[index] +" (not connected)";
 }
 
-function testConnection(ip, port, apikey, index, camPort) {
+function testConnection(ip, port, apikey, index, camPort, camIP) {
     	var testClient = new OctoPrintClient();
     	testClient.options.baseurl = "http://" + ip + ":" + port;
     	testClient.options.apikey = apikey;
     	testClient.get("/api/connection")
    	.done(function (response) {
        		if (response.current.state !== null) {
-        		eePrinter(ip, port, apikey, index, camPort);
+        		eePrinter(ip, port, apikey, index, camPort, camIP);
   		} else {
-        		connectionError(ip, port, apikey, index, camPort);
+        		connectionError(ip, port, apikey, index, camPort, camIP);
   		}
    	})
    	.progress(function() {
        		console.log("H");
     	})
     	.fail(function () {
-        	connectionError(ip, port, apikey, index, camPort);
+        	connectionError(ip, port, apikey, index, camPort, camIP);
     	});
 }
 
-function connectionError(ip, port, apikey, index,camPort) {
+function connectionError(ip, port, apikey, index,camPort, camIP) {
 	var errorMessage = "PrinterView was unable to connect to the OctoPrint instance at <b>" + ip + "</b> using the following API key: " + apikey +". Do you still want to add this printer?";
   	bootbox.confirm(errorMessage, function (result) {
       		if (result) {
-        		eePrinter(ip, port, apikey, index, camPort, "No Connection");
+        		eePrinter(ip, port, apikey, index, camPort, camIP, "No Connection");
       		} else {
         		return 0;
       		}
