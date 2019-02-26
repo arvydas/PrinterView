@@ -281,7 +281,7 @@ function resizeCanvas(ratio, index)
 
 function videoInfo(ip, camPort, index) {
     //resizeCanvas(0.5625, index);
-    var url = "http://192.168.100.97:" + camPort + "/?action=stream";
+    var url = "http://192.168.100.97:" + camPort + "/?action=snapshot";
     var img = new Image();
     img.src = url;
     var canvas  = document.getElementById("printerCam" + index);
