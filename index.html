@@ -21,6 +21,7 @@
         	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap2-toggle.min.js"></script>
         	<script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js") }}"></script>
         	<script src="octo_packed_client.js"></script>
+        	<script src="default.js"></script>
     	</head>
 
     	<body>
@@ -87,6 +88,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" onclick="importDefaults()" data-dismiss="modal">Load from Server</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="eeImportModal()">Import</button>
                     </div>

@@ -421,9 +421,18 @@ function eePrinterModal(index) {
   	$("#eePrinterModal").modal("show");
 }
 
+function importDefaults() {
+  if (defaultPrinters === undefined) {
+    bootbox.alert("No default printers configured. Please add them to default.js file");
+    return;
+  }
+   $("#printerIframes").empty();
+   deletePrinters(); 
+   localStorage.setItem("savedPrinters", JSON.stringify(defaultPrinters));
+   reloadPrinters();
+}
+
 function eeImportModal() {
-  //alert($('#eeImportText').val());
-  //
    var newPrinters = JSON.parse($('#eeImportText').val());
    $("#printerIframes").empty();
    deletePrinters(); 
