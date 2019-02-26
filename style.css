@@ -23,6 +23,7 @@ body{
 .panel-heading {
   line-height:28px;
   font-weight: 700;
+  padding: 0 0 0 15px;
 }
 
 .panel-body {
