@@ -49,7 +49,12 @@
                   </li>
                   <li>
                     <a href="#" onclick="exportSettings()" id="exportSettingsBtn">
-                      <span class="glyphicon glyphicon-flash" aria-hidden="true"></span> Export
+                      <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span> Export
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" id="importSettingsBtn" data-toggle="modal" data-target="#eeImportModal" href="#" >
+                      <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Import
                     </a>
                   </li>
                 </ul>
@@ -66,6 +71,28 @@
               <div id="printerIframes" style="display: none;">
               </div>
           </div>
+
+		<div class="modal fade" id="eeImportModal" tabindex="-1" role="dialog" aria-labelledby="eeImportModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Import</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <textarea class="form-control" placeholder="" aria-describedby="basic-addon1" id="eeImportText" cols="80" rows="20"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="eeImportModal()">Import</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 		<div class="modal fade" id="eePrinterModal" tabindex="-1" role="dialog" aria-labelledby="eePrinterModal" aria-hidden="true">
        			<div class="modal-dialog">

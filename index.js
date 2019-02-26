@@ -164,6 +164,12 @@ function updateStatus(ip, port, apikey, camPort, index) {
             			//Do not make blank. It is annoying.
           			document.getElementById("panel" + index).className = "panel panel-default";
           			basicInfo(ip, port, apikey, index);
+                document.getElementById("currentFile" +index).innerHTML ="&nbsp;";
+                document.getElementById("timeLeft" +index).innerHTML ="&nbsp;";
+
+                document.getElementById("e0Temp" +index).innerHTML = "&nbsp;";
+                document.getElementById("e1Temp" +index).innerHTML = "&nbsp;";
+                document.getElementById("bedTemp" +index).innerHTML = "&nbsp;";
       			}
     		}
   	})
@@ -353,7 +359,7 @@ function addPrinter(ip, port, apikey, printerNum) {
   	var removeButton        = '<li><a data-toggle="modal" href="#" onclick="removePrinter(' + printerNum +')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Remove Printer </a></li>';
   	var octoPrintPageButton = '<li><a href="http://' +printers.ip[printerNum] + ':' + printers.port[printerNum] + '/" target="_blank"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> OctoPrint</a></li>';
   	var connectButton       = '<li><a href="#" onclick="connectPrinter(' + printerNum +')"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Connect</a></li>';
-  	var controlButton       = '<li><a href="#" onclick="controlPrinter(' + printerNum +')"><span class="glyphicon glyphicon-star" aria-hidden="true"></span> Control Printer</a></li>';
+  	var controlButton       = '<li><a href="#" onclick="controlPrinter(' + printerNum +')"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Control Printer</a></li>';
   	// add HTML
   	$("#printerGrid").append('<div class="col-xs-6 col-md-4 col-lg-3" id="printer' + printerNum +'"></div>');
   	$("#printer" +printerNum).append('<div class="panel panel-default" id="panel' + printerNum +'"></div>');
@@ -361,7 +367,7 @@ function addPrinter(ip, port, apikey, printerNum) {
   	$("#panelHeading" +printerNum).append('<span id="printerName' + printerNum +'" class="pull-left">Loading...</span>');
   	$("#panelHeading" +printerNum).append('<div class="btn-group pull-right" id="btnGroup' + printerNum +'"></div>');
   	$("#btnGroup" +printerNum).append('<button type="button" class="btn btn-default btn-xs" onclick="startJob(' + printerNum +')"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>');
-  	$("#btnGroup" +printerNum).append('<button type="button" class="btn btn-default btn-xs" onclick="controlPrinter(' + printerNum +')"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>');
+  	$("#btnGroup" +printerNum).append('<button type="button" class="btn btn-default btn-xs" onclick="controlPrinter(' + printerNum +')"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span></button>');
   	$("#btnGroup" +printerNum).append('<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true" id="menuBtn' + printerNum +'"></span></button>');
   	$("#btnGroup" +printerNum).append('<ul class="dropdown-menu" role="menu" id="dropdown' + printerNum +'"></ul>');
   	$("#dropdown" +printerNum).append(connectButton);
@@ -415,6 +421,16 @@ function eePrinterModal(index) {
   	$("#eePrinterModal").modal("show");
 }
 
+function eeImportModal() {
+  //alert($('#eeImportText').val());
+  //
+   var newPrinters = JSON.parse($('#eeImportText').val());
+   $("#printerIframes").empty();
+   deletePrinters(); 
+   localStorage.setItem("savedPrinters", JSON.stringify(newPrinters));
+   reloadPrinters();
+}
+
 function exportSettings() {
     var dialog = bootbox.dialog({
     title: 'Export',
@@ -453,6 +469,7 @@ function deletePrinters() {
 	numPrinters = 0;
     	// remove all elements within the grid
 	$("#printerGrid").empty();
+  $("#printerIframes").empty();
 }
 
 function removePrinter(index) {
@@ -475,6 +492,7 @@ function removePrinter(index) {
 			numPrinters = 0;
         		delete client;
 			$("#printerGrid").empty();
+      $("#printerIframes").empty();
 			reloadPrinters();
     		}
   	});
