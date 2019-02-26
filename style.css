@@ -20,6 +20,11 @@ body{
   margin: 0;
 }
 
+.panel-heading {
+  line-height:28px;
+  font-weight: 700;
+}
+
 .panel-body {
   margin: 0;
   padding: 0;
@@ -33,3 +38,4 @@ body{
 .navbar-inverse .navbar-brand {
   color: white;
 }
+

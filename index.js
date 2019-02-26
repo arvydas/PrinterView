@@ -364,11 +364,11 @@ function addPrinter(ip, port, apikey, printerNum) {
   	$("#printerGrid").append('<div class="col-xs-6 col-md-4 col-lg-3" id="printer' + printerNum +'"></div>');
   	$("#printer" +printerNum).append('<div class="panel panel-default" id="panel' + printerNum +'"></div>');
   	$("#panel" +printerNum).append('<div class="panel-heading clearfix" id="panelHeading' + printerNum +'"></div>');
-  	$("#panelHeading" +printerNum).append('<span id="printerName' + printerNum +'" class="pull-left">Loading...</span>');
+  	$("#panelHeading" +printerNum).append('<span id="printerName' + printerNum +'" class="pull-left printer-name">Loading...</span>');
   	$("#panelHeading" +printerNum).append('<div class="btn-group pull-right" id="btnGroup' + printerNum +'"></div>');
-  	$("#btnGroup" +printerNum).append('<button type="button" class="btn btn-default btn-xs" onclick="startJob(' + printerNum +')"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>');
-  	$("#btnGroup" +printerNum).append('<button type="button" class="btn btn-default btn-xs" onclick="controlPrinter(' + printerNum +')"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span></button>');
-  	$("#btnGroup" +printerNum).append('<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true" id="menuBtn' + printerNum +'"></span></button>');
+  	$("#btnGroup" +printerNum).append('<button type="button" class="btn btn-default btn-sm" onclick="startJob(' + printerNum +')"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>');
+  	$("#btnGroup" +printerNum).append('<button type="button" class="btn btn-default btn-sm" onclick="controlPrinter(' + printerNum +')"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span></button>');
+  	$("#btnGroup" +printerNum).append('<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true" id="menuBtn' + printerNum +'"></span></button>');
   	$("#btnGroup" +printerNum).append('<ul class="dropdown-menu" role="menu" id="dropdown' + printerNum +'"></ul>');
   	$("#dropdown" +printerNum).append(connectButton);
   	$("#dropdown" +printerNum).append(editButton);
