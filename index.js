@@ -101,6 +101,10 @@ window.onload = function () {
     $(document).on("mouseleave", ".panel", function() {
       $(this).find(".summary-row-top").fadeOut();
     });
+
+    $('#reload').click(function() {
+      location.reload();
+    });
 };
 
 function initPrinters()
