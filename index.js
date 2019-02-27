@@ -411,7 +411,7 @@ function addPrinter(ip, port, apikey, printerNum) {
   	var connectButton       = '<li><a href="#" onclick="connectPrinter(' + printerNum +')"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Connect</a></li>';
   	var controlButton       = '<li><a href="#" onclick="controlPrinter(' + printerNum +')"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Control Printer</a></li>';
   	// add HTML
-  	$("#printerGrid").append('<div class="col-xs-6 col-sm-6 col-md-4 col-lg-3" id="printer' + printerNum +'"></div>');
+  	$("#printerGrid").append('<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3" id="printer' + printerNum +'"></div>');
   	$("#printer" +printerNum).append('<div class="panel panel-default" id="panel' + printerNum +'"></div>');
   	$("#panel" +printerNum).append('<div class="panel-heading clearfix" id="panelHeading' + printerNum +'"></div>');
   	$("#panelHeading" +printerNum).append('<span id="printerName' + printerNum +'" class="pull-left printer-name">Loading...</span>');
@@ -437,7 +437,7 @@ function addPrinter(ip, port, apikey, printerNum) {
 
     $("#body" +printerNum).append('<div id="summaryRowBottom' + printerNum +'" class = "summary-row-bottom"> </div>');
 
-    $("#summaryRowBottom" +printerNum).append('<div id="printerStatus' + printerNum +'" class="info-tile color-silver normal">Loading...</div><div id="timeLeft' + printerNum +'" class="info-tile color-orange normal">Loading...</div>');
+    $("#summaryRowBottom" +printerNum).append('<div id="printerStatus' + printerNum +'" class="info-tile color-silver normal">Loading...</div><div id="timeLeft' + printerNum +'" class="info-tile color-silver normal">Loading...</div>');
     $("#summaryRowBottom" +printerNum).append('<div class="info-description normal">File:</div><div id="currentFile' + printerNum +'" class="info-tile color-blue fill-width">Loading...</div>');
 
   	$("#body" +printerNum).append('<div class="progress" id="progress' + printerNum +'"></div>');
