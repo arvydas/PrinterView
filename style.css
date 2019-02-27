@@ -49,23 +49,23 @@ body{
   padding: 3px 5px;
 }
 
-.blue {
+.color-blue {
   background-color: rgb(94, 138, 178);
 }
 
-.orange {
+.color-orange {
   background-color: rgb(250, 173, 37);
 }
 
-.red {
+.color-red {
   background-color: rgb(288, 71, 63);
 }
 
-.gray {
+.color-gray {
   background-color: rgb(116, 116, 116);
 }
 
-.silver {
+.color-silver {
   background-color: silver;
   color: black;
 }
