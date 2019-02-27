@@ -146,9 +146,9 @@ function updateStatus(ip, port, apikey, camPort, index) {
         		// get printer state
             let stateString = "";
             if (response.current.state.startsWith("Error")) {
-              stateString = "<span class='highlight' data-toggle='tooltip' data-placement='bottom' title='" + response.current.state + "'>Error</span>";
+              stateString = "<span data-toggle='tooltip' data-placement='bottom' title='" + response.current.state + "'>Error</span>";
             } else {
-              stateString = "<span class='highlight'>" + response.current.state + "</span>";
+              stateString = response.current.state;
             }
             document.getElementById("printerStatus" + index).innerHTML = stateString;
         		if (response.current.state !== "Closed" && response.current.state !== "Offline" && !response.current.state.startsWith("Error")) {
@@ -224,10 +224,10 @@ function jobInfo(ip, port, apikey, index) {
               }
 
           		// set filename of current print
-          		document.getElementById("currentFile" +index).innerHTML = "File: " + "<span class='highlight'>" +response.job.file.name.split(".").slice(0, -1).join(".") + "</span>" ;
+          		document.getElementById("currentFile" +index).innerHTML = response.job.file.name.split(".").slice(0, -1).join(".");
                         
           		// set estimation of print time left
-          		document.getElementById("timeLeft" +index).innerHTML = "ETA: " + "<span class='highlight'>" + (response.progress.printTimeLeft / 60).toFixed(0) + "</span>" + " min";
+          		document.getElementById("timeLeft" +index).innerHTML = (response.progress.printTimeLeft / 60).toFixed(0) + " min";
 
           		// set percentage of print completion
               $("div#progressBar" +index).css("width", response.progress.completion + "%");
@@ -244,16 +244,34 @@ function tempInfo(ip, port, apikey, index) {
   	client[index].get("/api/printer")
   	.done(function (response) {
       		// get temp of extruder 0 and its target temp
-      		document.getElementById("e0Temp" +index).innerHTML = "E0: " + "<span class='highlight'>" + response.temperature.tool0.actual + "°/" +response.temperature.tool0.target +"°" + "</span>";
+      		document.getElementById("e0Temp" +index).innerHTML = response.temperature.tool0.actual + "°/" +response.temperature.tool0.target +"°";
+
+          if (response.temperature.tool0.target == 0) {
+            $("#e0Temp" +index).removeClass("red").addClass("gray");
+          } else {
+            $("#e0Temp" +index).removeClass("gray").addClass("red");
+          }
+
                 // get temp of extruder 1 and its target temp
                 if (typeof response.temperature.tool1 !== "undefined" && response.temperature.tool1.actual !== null) {
-                    document.getElementById("e1Temp" +index).innerHTML = "E1: " + "<span class='highlight'>" + response.temperature.tool1.actual + "°/" +response.temperature.tool1.target +"°" + "</span>";
+                    document.getElementById("e1Temp" +index).innerHTML = response.temperature.tool1.actual + "°/" +response.temperature.tool1.target +"°";
+                    if (response.temperature.tool1.target == 0) {
+                      $("#e1Temp" +index).removeClass("red").addClass("gray");
+                    } else {
+                      $("#e1Temp" +index).removeClass("gray").addClass("red");
+                    }
                 } else {
-                    document.getElementById("e1Temp" +index).innerHTML ="E1: no tool";
+                    document.getElementById("e1Temp" +index).innerHTML ="no tool";
+                    $("#e1Temp" +index).removeClass("red").addClass("gray");
                 }
       		// get temp of the bed and its target temp
       		if (typeof response.temperature.bed !== "undefined" && response.temperature.bed.actual !== null) {
-        		document.getElementById("bedTemp" +index).innerHTML = "Bed: " + "<span class='highlight'>" + response.temperature.bed.actual + "°/" +response.temperature.bed.target +"°" + "</span>";
+        		document.getElementById("bedTemp" +index).innerHTML = response.temperature.bed.actual + "°/" +response.temperature.bed.target +"°";
+            if (response.temperature.bed.target == 0) {
+              $("#bedTemp" +index).removeClass("red").addClass("gray");
+            } else {
+              $("#bedTemp" +index).removeClass("gray").addClass("red");
+            }
       		} else {
         		document.getElementById("bedTemp" +index).innerHTML ="0°";
       		}
@@ -363,7 +381,7 @@ function addPrinter(ip, port, apikey, printerNum) {
   	var connectButton       = '<li><a href="#" onclick="connectPrinter(' + printerNum +')"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Connect</a></li>';
   	var controlButton       = '<li><a href="#" onclick="controlPrinter(' + printerNum +')"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Control Printer</a></li>';
   	// add HTML
-  	$("#printerGrid").append('<div class="col-xs-6 col-md-4 col-lg-3" id="printer' + printerNum +'"></div>');
+  	$("#printerGrid").append('<div class="col-xs-6 col-sm-6 col-md-4 col-lg-3" id="printer' + printerNum +'"></div>');
   	$("#printer" +printerNum).append('<div class="panel panel-default" id="panel' + printerNum +'"></div>');
   	$("#panel" +printerNum).append('<div class="panel-heading clearfix" id="panelHeading' + printerNum +'"></div>');
   	$("#panelHeading" +printerNum).append('<span id="printerName' + printerNum +'" class="pull-left printer-name">Loading...</span>');
@@ -381,17 +399,16 @@ function addPrinter(ip, port, apikey, printerNum) {
   	$("#panel" +printerNum).append('<div class="panel-body" id="body' + printerNum +'"></div>');
     $("#body" +printerNum).append('<canvas id="printerCam' + printerNum +'" width = "320" height = "180" >Browser error!</canvas>');
 
-    $("#body" +printerNum).append('<div id="summaryRowTop' + printerNum +'" class = "row"> </div>');
+    $("#body" +printerNum).append('<div id="summaryRowTop' + printerNum +'" class = "row summary-row"> </div>');
 
-    $("#summaryRowTop" +printerNum).append('<div id="e0Temp' + printerNum +'" class="col-md-4">Loading...</div>');
-    $("#summaryRowTop" +printerNum).append('<div id="e1Temp' + printerNum +'" class="col-md-4">Loading...</div>');
-  	$("#summaryRowTop" +printerNum).append('<div id="bedTemp' + printerNum +'" class="col-md-4">Loading...</div>');
+    $("#summaryRowTop" +printerNum).append('<div class="col-md-4 col-sm-4"><span class="info-description">E0:</span><span id="e0Temp' + printerNum +'" class="info-tile red">Loading...</span></div>');
+    $("#summaryRowTop" +printerNum).append('<div class="col-md-4 col-sm-4"><span class="info-description">E1:</span><span id="e1Temp' + printerNum +'" class="info-tile red">Loading...</span></div>');
+    $("#summaryRowTop" +printerNum).append('<div class="col-md-4 col-sm-4"><span class="info-description">Bed:</span><span id="bedTemp' + printerNum +'" class="info-tile red">Loading...</span></div>');
 
-    $("#body" +printerNum).append('<div id="summaryRowBottom' + printerNum +'" class = "row"> </div>');
+    $("#body" +printerNum).append('<div id="summaryRowBottom' + printerNum +'" class = "row summary-row"> </div>');
 
-    $("#summaryRowBottom" +printerNum).append('<div id="printerStatus' + printerNum +'" class="col-md-4">Loading...</div>');
-  	$("#summaryRowBottom" +printerNum).append('<div id="currentFile' + printerNum +'" class="col-md-4">Loading...</div>');
-  	$("#summaryRowBottom" +printerNum).append('<div id="timeLeft' + printerNum +'" class="col-md-4">Loading...</div>');
+    $("#summaryRowBottom" +printerNum).append('<div class="col-md-4 col-sm-4"><span id="printerStatus' + printerNum +'" class="info-tile gray">Loading...</span><span id="timeLeft' + printerNum +'" class="info-tile orange">Loading...</span></div>');
+    $("#summaryRowBottom" +printerNum).append('<div class="col-md-8 col-sm-8"><span class="info-description">File:</span><span id="currentFile' + printerNum +'" class="info-tile blue fill-width">Loading...</span></div>');
 
   	$("#body" +printerNum).append('<div class="progress" id="progress' + printerNum +'"></div>');
 

@@ -1,5 +1,13 @@
 body{
   padding-top: 60px;
+  font-size: 13px;
+  background-color: rgb(45, 45, 48);
+  color: white;
+}
+
+.panel {
+  background-color: rgb(65, 65, 68);
+  color: white;
 }
 
 .equal {  
@@ -10,6 +18,9 @@ body{
 .highlight
 {
     font-weight:bold;
+    background-color: blue;
+    color: white;
+    padding: 2px;
 }
 
 .progress {
@@ -32,11 +43,56 @@ body{
 }
 
 .progress {
-  height: 10px;
+  height: 5px;
 }
 
 .navbar-inverse .navbar-nav>li>a,
 .navbar-inverse .navbar-brand {
   color: white;
+}
+
+.summary-row {
+  padding: 1px;
+}
+
+.info-tile {
+  font-size: 12px;
+  padding: 3px 5px;
+  float: left;
+  display: block;
+}
+
+.fill-width {
+  width: calc(100% - 33px);
+}
+
+.info-description {
+  background-color: rgb(116, 116, 116);
+  font-size: 12px;
+  float: left;
+  min-width: 33px;
+  display: block;
+  text-align: right;
+  padding: 3px 5px;
+}
+
+.blue {
+  background-color: rgb(94, 138, 178);
+}
+
+.orange {
+  background-color: rgb(250, 173, 37);
+}
+
+.red {
+  background-color: rgb(288, 71, 63);
+}
+
+.gray {
+  background-color: rgb(116, 116, 116);
+}
+
+.background {
+  background-color: rgb(45, 45, 48);
 }
 
