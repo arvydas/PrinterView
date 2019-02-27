@@ -82,6 +82,13 @@ window.onload = function () {
         500);
 
     });
+
+    $(document).on("mouseenter", ".panel", function() {
+      $(this).find(".summary-row-top").fadeIn();
+    });
+    $(document).on("mouseleave", ".panel", function() {
+      $(this).find(".summary-row-top").fadeOut();
+    });
 };
 
 function initPrinters()
@@ -154,14 +161,17 @@ function updateStatus(ip, port, apikey, camPort, index) {
         		if (response.current.state !== "Closed" && response.current.state !== "Offline" && !response.current.state.startsWith("Error")) {
                 if (printersInfo.state[index] === printerState.free){
                     document.getElementById("panel" + index).className = "panel panel-success";
+                    $("#printerStatus" + index).removeClass("red").removeClass("blue").addClass("silver");
                 } else {
                     document.getElementById("panel" + index).className = "panel panel-primary";
+                    $("#printerStatus" + index).removeClass("red").removeClass("silver").addClass("blue");
                 }
                 basicInfo(ip, port, apikey, index);
           			jobInfo(ip, port, apikey, index);
           			tempInfo(ip, port, apikey, index);
                 videoInfo(printers.cameraIp[index], printers.camPort[index], index);
         		} else {
+                $("#printerStatus" + index).removeClass("blue").removeClass("silver").addClass("red");
             			//Do not make blank. It is annoying.
           			document.getElementById("panel" + index).className = "panel panel-default";
           			basicInfo(ip, port, apikey, index);
@@ -247,30 +257,30 @@ function tempInfo(ip, port, apikey, index) {
       		document.getElementById("e0Temp" +index).innerHTML = response.temperature.tool0.actual + "°/" +response.temperature.tool0.target +"°";
 
           if (response.temperature.tool0.target == 0) {
-            $("#e0Temp" +index).removeClass("red").addClass("gray");
+            $("#e0Temp" +index).removeClass("red").addClass("silver");
           } else {
-            $("#e0Temp" +index).removeClass("gray").addClass("red");
+            $("#e0Temp" +index).removeClass("silver").addClass("red");
           }
 
                 // get temp of extruder 1 and its target temp
                 if (typeof response.temperature.tool1 !== "undefined" && response.temperature.tool1.actual !== null) {
                     document.getElementById("e1Temp" +index).innerHTML = response.temperature.tool1.actual + "°/" +response.temperature.tool1.target +"°";
                     if (response.temperature.tool1.target == 0) {
-                      $("#e1Temp" +index).removeClass("red").addClass("gray");
+                      $("#e1Temp" +index).removeClass("red").addClass("silver");
                     } else {
-                      $("#e1Temp" +index).removeClass("gray").addClass("red");
+                      $("#e1Temp" +index).removeClass("silver").addClass("red");
                     }
                 } else {
                     document.getElementById("e1Temp" +index).innerHTML ="no tool";
-                    $("#e1Temp" +index).removeClass("red").addClass("gray");
+                    $("#e1Temp" +index).removeClass("red").addClass("silver");
                 }
       		// get temp of the bed and its target temp
       		if (typeof response.temperature.bed !== "undefined" && response.temperature.bed.actual !== null) {
         		document.getElementById("bedTemp" +index).innerHTML = response.temperature.bed.actual + "°/" +response.temperature.bed.target +"°";
             if (response.temperature.bed.target == 0) {
-              $("#bedTemp" +index).removeClass("red").addClass("gray");
+              $("#bedTemp" +index).removeClass("red").addClass("silver");
             } else {
-              $("#bedTemp" +index).removeClass("gray").addClass("red");
+              $("#bedTemp" +index).removeClass("silver").addClass("red");
             }
       		} else {
         		document.getElementById("bedTemp" +index).innerHTML ="0°";
@@ -399,16 +409,16 @@ function addPrinter(ip, port, apikey, printerNum) {
   	$("#panel" +printerNum).append('<div class="panel-body" id="body' + printerNum +'"></div>');
     $("#body" +printerNum).append('<canvas id="printerCam' + printerNum +'" width = "320" height = "180" >Browser error!</canvas>');
 
-    $("#body" +printerNum).append('<div id="summaryRowTop' + printerNum +'" class = "row summary-row"> </div>');
+    $("#body" +printerNum).append('<div id="summaryRowTop' + printerNum +'" class = "summary-row-top" style="display: none;"> </div>');
 
-    $("#summaryRowTop" +printerNum).append('<div class="col-md-4 col-sm-4"><span class="info-description">E0:</span><span id="e0Temp' + printerNum +'" class="info-tile red">Loading...</span></div>');
-    $("#summaryRowTop" +printerNum).append('<div class="col-md-4 col-sm-4"><span class="info-description">E1:</span><span id="e1Temp' + printerNum +'" class="info-tile red">Loading...</span></div>');
-    $("#summaryRowTop" +printerNum).append('<div class="col-md-4 col-sm-4"><span class="info-description">Bed:</span><span id="bedTemp' + printerNum +'" class="info-tile red">Loading...</span></div>');
+    $("#summaryRowTop" +printerNum).append('<span class="info-description">E0:</span><span id="e0Temp' + printerNum +'" class="info-tile silver">Loading...</span>');
+    $("#summaryRowTop" +printerNum).append('<span class="info-description">E1:</span><span id="e1Temp' + printerNum +'" class="info-tile silver">Loading...</span>');
+    $("#summaryRowTop" +printerNum).append('<span class="info-description">Bed:</span><span id="bedTemp' + printerNum +'" class="info-tile silver">Loading...</span>');
 
-    $("#body" +printerNum).append('<div id="summaryRowBottom' + printerNum +'" class = "row summary-row"> </div>');
+    $("#body" +printerNum).append('<div id="summaryRowBottom' + printerNum +'" class = "summary-row-bottom"> </div>');
 
-    $("#summaryRowBottom" +printerNum).append('<div class="col-md-4 col-sm-4"><span id="printerStatus' + printerNum +'" class="info-tile gray">Loading...</span><span id="timeLeft' + printerNum +'" class="info-tile orange">Loading...</span></div>');
-    $("#summaryRowBottom" +printerNum).append('<div class="col-md-8 col-sm-8"><span class="info-description">File:</span><span id="currentFile' + printerNum +'" class="info-tile blue fill-width">Loading...</span></div>');
+    $("#summaryRowBottom" +printerNum).append('<div id="printerStatus' + printerNum +'" class="info-tile silver normal">Loading...</div><div id="timeLeft' + printerNum +'" class="info-tile orange normal">Loading...</div>');
+    $("#summaryRowBottom" +printerNum).append('<div class="info-description normal">File:</div><div id="currentFile' + printerNum +'" class="info-tile blue fill-width">Loading...</div>');
 
   	$("#body" +printerNum).append('<div class="progress" id="progress' + printerNum +'"></div>');
 
