@@ -66,7 +66,7 @@ This should install source code to /home/pi/PrinterView
 Install nginx
 
 ```
-apt-get install nginx
+sudo apt install nginx
 ```
 
 Edit nginx configuration
@@ -145,7 +145,7 @@ Now in order to import your printers in another browser, just click on Import bu
 
 # Screenshots and Usage
 
-Make sure you configure OctoPrint as listend in the initial instructions.
+Make sure you configure OctoPrint as listed in the initial instructions.
 
 ![Welcome screen](https://raw.githubusercontent.com/arvydas/PrinterView/master/images/screenshots/screenshot-welcome.png)
 
