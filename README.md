@@ -8,6 +8,8 @@ It works by storing all settings inside your browser's local storage and uses on
 I significantly modified the user inteface to suit purely my needs and designed it in such a way so that I could both monitor 3D printers 
 and also control them for my small scale manufacturing requirements.
 
+_Note:_ It only works with 3D printers accessible on the local network.
+
 # Features
 
 - Minimalistic approach to only display relevant information
