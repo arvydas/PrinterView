@@ -97,3 +97,7 @@ body{
   width: auto;
   white-space: nowrap;
 }
+
+.modal {
+  color: black;
+}
