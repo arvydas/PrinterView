@@ -42,7 +42,7 @@ You have the following options on how to run this software:
 
 ## My hosted version
 
-Open [printerview.arvydas.co.uk](printerview.arvydas.co.uk) and set up your printers. I will keep this version of the website up to date with source code on GitHub.
+Open <a href="http://printerview.arvydas.co.uk" target="_blank">printerview.arvydas.co.uk</a> and set up your printers. I will keep this version of the website up to date with source code on GitHub.
 
 ## Local copy
 
@@ -144,8 +144,32 @@ var defaultPrinters = {
 Now in order to import your printers in another browser, just click on Import button and then "Load from Server". Your existing printers will be cleared and new ones imported.
 
 # Screenshots and Usage
-![Welcome screen](https://raw.githubusercontent.com/quillford/PrinterView/master/images/screenshots/screenshot-welcome.png)
-![screenshot](https://raw.githubusercontent.com/quillford/PrinterView/master/images/screenshots/screenshot.png)
+
+Make sure you configure OctoPrint as listend in the initial instructions.
+
+![Welcome screen](https://raw.githubusercontent.com/arvydas/PrinterView/master/images/screenshots/screenshot-welcome.png)
+
+Overview of all printers.
+
+![screenshot](https://raw.githubusercontent.com/arvydas/PrinterView/master/images/screenshots/screenshot.png)
+
+You can view temperature information by hovering mouse over the tile.
+
+![temperature-information](https://raw.githubusercontent.com/arvydas/PrinterView/master/images/screenshots/temperature-information.png)
+
+There are actions that can be performed on each printer
+
+- Play button starts current file print
+- Open button opens user interface in the same window
+- Menu button allows additional actions on the printer
+
+![printer-menu](https://raw.githubusercontent.com/arvydas/PrinterView/master/images/screenshots/printer-menu.png)
+
+When printer settings are opened in iframe, it is cached in your browser, but loaded only when you click the "Open" button. Clicking the button again will show the same content you were viewing last time making it easy to continue what you were working on with that particular 3D printer.
+
+![printer-iframe](https://raw.githubusercontent.com/arvydas/PrinterView/master/images/screenshots/printer-iframe.png)
+
+Use the "Back" button to return to the list of all printers.
 
 # Changelog
 
